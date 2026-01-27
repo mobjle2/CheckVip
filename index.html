@@ -1,37 +1,84 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TRUNGGIA82 Check VIP – ADMIN</title>
+<title>TRUNGGIA82 Check VIP – ADMIN FIXED</title>
 <style>
 body{margin:0;font-family:Arial;background:#020617;color:#e5e7eb}
-.wrap{display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;margin:auto;padding:20px}
-.box{background:#020617;border:1px solid #1e293b;border-radius:16px;padding:16px}
-input,button{width:100%;padding:12px;border-radius:10px;border:none;font-size:15px}
-button{margin-top:10px;background:#0ea5e9;color:#000;font-weight:bold}
-.item{padding:12px 0;border-bottom:1px solid #1e293b}
-.vip{font-weight:bold}
-.vip-8{color:#f59e0b}.vip-9{color:#ef4444}
-.row{display:flex;align-items:center;gap:6px}
-.small{font-size:12px;color:#9ca3af}
-.admin-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1e293b}
-.admin-item input{width:70px;padding:6px;font-size:13px}
-.copy{cursor:pointer;color:#38bdf8}
+.box{max-width:900px;margin:auto;padding:20px}
+input,button{width:100%;padding:14px;border-radius:12px;border:none;font-size:16px}
+button{margin-top:12px;background:#0ea5e9;color:#000;font-weight:bold}
+#adminPanel button{margin-right:8px;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="box">
-    <h2>CHECK VIP</h2>
-    <input id="q" placeholder="Nhập mã chip / prefix">
-    <button onclick="check()">CHECK</button>
-    <div id="out"></div>
-  </div>
 
+<!-- APP UI -->
+<div id="app" style="display:none">
   <div class="box">
-    <h2>ADMIN TRUNGGIA82</h2>
-    <div id="admin"></div>
-    <div class="small" style="margin-top:8px">Admin pass: <b>12345</b></div>
+    <h2>TRUNGGIA82 Check VIP (ADMIN)</h2>
+    <input id="q" placeholder="Nhập mã test">
+    <button onclick="alert('DATA FULL vẫn giữ nguyên ở bản chính')">CHECK</button>
+
+    <div id="adminPanel" style="display:none">
+      <h3>👑 ADMIN PANEL</h3>
+      <button onclick="changeAdminPass()">Đổi pass ADMIN</button>
+      <button onclick="toggleUser('A')">Khóa/Mở A</button>
+      <button onclick="toggleUser('B')">Khóa/Mở B</button>
+    </div>
   </div>
+</div>
+
+<!-- AUTH SCRIPT (MUST BE AFTER APP) -->
+<script>
+const USERS={
+  ADMIN:{pass:"ADMIN999"},
+  A:{pass:"A123",expire:"2026-02-01",active:true},
+  B:{pass:"B456",expire:"2026-01-25",active:true}
+};
+
+function block(msg){
+  document.body.innerHTML="<h2 style='color:red'>"+msg+"</h2>";
+  throw new Error("BLOCKED");
+}
+
+(function(){
+  const p=new URLSearchParams(location.search);
+  const u=p.get("u");
+  if(!u||!USERS[u]) block("❌ Link không hợp lệ");
+
+  if(u==="ADMIN"){
+    if(prompt("🔐 ADMIN PASS")!==USERS.ADMIN.pass) block("❌ Sai pass ADMIN");
+    document.getElementById("app").style.display="block";
+    document.getElementById("adminPanel").style.display="block";
+    window.CURRENT_USER="ADMIN";
+    return;
+  }
+
+  if(localStorage.getItem("LOCK_"+u)==="1") block("🚫 Bị ADMIN khóa");
+  if(!USERS[u].active) block("🚫 Tài khoản đã bị khóa");
+  if(Date.now()>new Date(USERS[u].expire+"T23:59:59").getTime())
+    block("⏰ Hết hạn");
+
+  if(prompt("🔐 PASS "+u)!==USERS[u].pass) block("❌ Sai pass");
+
+  document.getElementById("app").style.display="block";
+  window.CURRENT_USER=u;
+})();
+
+function toggleUser(u){
+  const k="LOCK_"+u;
+  const v=localStorage.getItem(k)==="1";
+  localStorage.setItem(k,v?"0":"1");
+  alert("User "+u+" : "+(v?"MỞ":"KHÓA"));
+}
+
+function changeAdminPass(){
+  const p=prompt("Nhập pass ADMIN mới:");
+  if(p) USERS.ADMIN.pass=p;
+}
+</script>
+
+</body>
+</html>
