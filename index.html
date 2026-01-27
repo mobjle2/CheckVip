@@ -7,7 +7,12 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#020617;color:#e5e7eb}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#020617;
+  color:#e5e7eb;
+}
 
 .container{
   max-width:95vw;
@@ -49,6 +54,23 @@ button{margin-top:12px;background:#0ea5e9;color:#000;font-weight:bold;cursor:poi
 .small{font-size:12px;color:#9ca3af;word-break:break-all}
 .copy{font-size:12px;color:#38bdf8;cursor:pointer}
 .lock{font-size:20px;margin-left:10px}
+
+/* LOGIN */
+#adminLogin{
+  display:none;
+  height:100%;
+}
+.login-box{
+  max-width:360px;
+  margin:80px auto;
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:18px;
+  padding:24px;
+}
+.login-box h3{text-align:center;margin-bottom:16px}
+.login-box input{margin-top:8px}
+.error{color:#ef4444;font-size:13px;margin-top:8px;text-align:center}
 </style>
 </head>
 
@@ -72,9 +94,19 @@ button{margin-top:12px;background:#0ea5e9;color:#000;font-weight:bold;cursor:poi
 
 </div>
 
+<!-- LOGIN UI -->
+<div id="adminLogin">
+  <div class="login-box">
+    <h3>🔐 ĐĂNG NHẬP ADMIN</h3>
+    <input id="adminPassInput" type="password" placeholder="Nhập mật khẩu admin">
+    <button onclick="loginAdmin()">ĐĂNG NHẬP</button>
+    <div id="loginError" class="error"></div>
+  </div>
+</div>
+
 <script>
 /* ===== CONFIG ===== */
-const ADMIN_PASS = "12345"; // đổi mật khẩu admin tại đây
+const ADMIN_PASS = "12345";
 
 /* ===== DATA DEMO ===== */
 const data=[
@@ -86,7 +118,6 @@ const data=[
 
 /* ===== CHECK ===== */
 function normalize(s){return s.toUpperCase().replace(/[^A-Z0-9]/g,"")}
-
 function check(){
  const k=normalize(q.value);
  out.innerHTML="";
@@ -105,7 +136,7 @@ function check(){
    </div>`).join("");
 }
 
-/* ===== ADMIN / WORKER ===== */
+/* ===== ADMIN ===== */
 const admins=[
  {name:"Thành Lộc",key:"A",lock:false},
  {name:"Thợ B",key:"B",lock:true},
@@ -132,21 +163,24 @@ function renderAdmins(){
  }).join("");
 }
 
-/* ===== ROUTING ===== */
+/* ===== LOGIN FLOW ===== */
+function loginAdmin(){
+ const v=adminPassInput.value;
+ if(v!==ADMIN_PASS){
+   loginError.innerText="❌ Sai mật khẩu";
+   return;
+ }
+ document.getElementById("adminLogin").style.display="none";
+ document.getElementById("adminPanel").style.display="block";
+ renderAdmins();
+}
+
 (function(){
  const p=new URLSearchParams(location.search);
- const u=p.get("u");
-
- if(u==="ADMIN"){
-   const pass=prompt("🔐 Nhập mật khẩu ADMIN");
-   if(pass!==ADMIN_PASS){
-     document.body.innerHTML="<h2 style='color:red;text-align:center'>❌ Sai mật khẩu ADMIN</h2>";
-     return;
-   }
-   document.getElementById("adminPanel").style.display="block";
-   renderAdmins();
+ if(p.get("u")==="ADMIN"){
+   document.querySelector(".container").style.display="none";
+   document.getElementById("adminLogin").style.display="block";
  }
- // nếu là thợ (?u=A,B,...) thì KHÔNG hiện admin panel
 })();
 </script>
 
