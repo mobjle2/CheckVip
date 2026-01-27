@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TRUNGGIA82 Check VIP – ADMIN SVG LOCK</title>
+<style>
+body{margin:0;font-family:Arial;background:#020617;color:#e5e7eb}
+.box{max-width:900px;margin:auto;padding:20px}
+.user-card{
+  margin-top:20px;
+  padding:20px;
+  border-radius:18px;
+  background:#020617;
+  border:1px solid #1e293b;
+  text-align:center
+}
+.user-name{font-size:20px;font-weight:bold;margin-bottom:14px}
+.lock-svg{
+  width:96px;
+  height:96px;
+  cursor:pointer;
+  transition:transform .2s ease;
+}
+.lock-svg:hover{transform:scale(1.08)}
+.counter{margin-top:10px;font-size:14px;color:#cbd5f5}
+.note{margin-top:6px;font-size:13px;color:#94a3b8}
+</style>
+</head>
+<body>
+
+<div id="app" style="display:none">
+ <div class="box">
+  <h2>👑 ADMIN PANEL</h2>
+
+  <div class="user-card">
+    <div class="user-name">Thợ A</div>
+    <div id="iconA" onclick="toggleUser('A')"></div>
+    <div id="countA" class="counter"></div>
+    <div class="note">Bấm icon để khóa / mở</div>
+  </div>
+ </div>
+</div>
+
+<script>
+const USERS={ADMIN:{pass:"ADMIN999"},A:{pass:"A123"}};
+
+function block(m){document.body.innerHTML="<h2 style='color:red'>"+m+"</h2>";throw 0;}
+function isLocked(u){return localStorage.getItem("LOCK_"+u)==="1";}
+function getCount(u){return parseInt(localStorage.getItem("COUNT_"+u)||"0");}
+function incCount(u){localStorage.setItem("COUNT_"+u,getCount(u)+1);}
+
+function svgOpen(){
+ return `<svg class="lock-svg" viewBox="0 0 64 64">
+ <rect x="14" y="26" width="36" height="30" rx="6" fill="#16a34a"/>
+ <path d="M22 26V18c0-6 4-10 10-10s10 4 10 10" fill="none" stroke="#16a34a" stroke-width="6" stroke-linecap="round"/>
+ <circle cx="32" cy="41" r="4" fill="#000"/>
+</svg>`;
+}
+
+function svgLocked(){
+ return `<svg class="lock-svg" viewBox="0 0 64 64">
+ <rect x="14" y="26" width="36" height="30" rx="6" fill="#facc15"/>
+ <path d="M22 26V20c0-6 4-10 10-10s10 4 10 10v6" fill="none" stroke="#facc15" stroke-width="6" stroke-linecap="round"/>
+ <circle cx="32" cy="41" r="4" fill="#000"/>
+</svg>`;
+}
+
+function updateUI(u){
+ const box=document.getElementById("icon"+u);
+ const c=document.getElementById("count"+u);
+ box.innerHTML=isLocked(u)?svgLocked():svgOpen();
+ c.innerHTML="Số lần đã dùng: "+getCount(u);
+}
+
+function toggleUser(u){
+ localStorage.setItem("LOCK_"+u,isLocked(u)?"0":"1");
+ updateUI(u);
+}
+
+(function(){
+ const p=new URLSearchParams(location.search);
+ const u=p.get("u");
+ if(!u||!USERS[u]) block("❌ Link không hợp lệ");
+
+ if(u==="ADMIN"){
+  if(prompt("ADMIN PASS")!==USERS.ADMIN.pass) block("❌ Sai pass ADMIN");
+  document.getElementById("app").style.display="block";
+  updateUI("A");
+  return;
+ }
+
+ if(isLocked(u)) block("🚫 Bị ADMIN khóa");
+ if(prompt("PASS "+u)!==USERS[u].pass) block("❌ Sai pass");
+ incCount(u);
+ document.getElementById("app").style.display="block";
+})();
+</script>
+
+</body>
+</html>
