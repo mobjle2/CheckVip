@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADMIN TRUNGGIA82</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#020617;
+  color:#e5e7eb;
+}
+
+/* ===== LAYOUT ===== */
+.container{
+  max-width:95vw;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:2.3fr 1fr;
+  gap:24px;
+}
+
+.panel{
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:20px;
+  padding:22px;
+}
+
+/* ===== CHECK ===== */
+.title{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:16px;
+}
+
+input,button{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+}
+
+button{
+  margin-top:12px;
+  background:#0ea5e9;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.item{
+  padding:14px 0;
+  border-bottom:1px solid #1e293b;
+}
+
+.vip{font-weight:bold}
+.vip-8{color:#f59e0b}
+.vip-9{color:#ef4444}
+
+.badge{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:bold;
+  margin-left:6px;
+}
+.ufs{background:#16a34a;color:#000}
+.brand{border:1px solid #3b82f6;color:#3b82f6}
+
+/* ===== ADMIN ===== */
+.admin-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:10px 0;
+  border-bottom:1px solid #1e293b;
+}
+
+.admin-box{
+  flex:1;
+}
+
+.small{
+  font-size:12px;
+  color:#9ca3af;
+  word-break:break-all;
+}
+
+.copy{
+  font-size:12px;
+  color:#38bdf8;
+  cursor:pointer;
+}
+
+.lock{
+  font-size:20px;
+  margin-left:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="panel">
+    <div class="title">ADMIN TRUNGGIA82</div>
+    <input id="q" placeholder="Nhập mã chip / prefix (vd: b813)">
+    <button onclick="check()">CHECK</button>
+    <div id="out"></div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel">
+    <div class="title">ADMIN TRUNGGIA82</div>
+    <div id="adminList"></div>
+  </div>
+
+</div>
+
+<script>
+/* ===== CHECK DATA (demo) ===== */
+const data=[
+ {code:"KM8V8001JM-B813",vip:8},
+ {code:"KM8V9001JM-B813",vip:8},
+ {code:"KM8V7001JA-B813",vip:8},
+ {code:"KM8F800JM-B813",vip:9}
+];
+
+function normalize(s){return s.toUpperCase().replace(/[^A-Z0-9]/g,"")}
+
+function check(){
+ const k=normalize(q.value);
+ out.innerHTML="";
+ const r=data.filter(x=>normalize(x.code).includes(k));
+ if(!r.length){out.innerHTML="<div class='item'>❌ Không tìm thấy</div>";return;}
+ out.innerHTML=r.map(x=>`
+   <div class="item">
+     <div><b>MÃ:</b> ${x.code}</div>
+     <div class="vip vip-${x.vip}">VIP : VIP ${x.vip}</div>
+     <div>RAM : 8G</div>
+     <div>ROM : 256G</div>
+     <div>STORAGE :
+       <span class="badge ufs">UFS</span>
+       <span class="badge brand">SAM SUNG</span>
+     </div>
+   </div>`).join("");
+}
+
+/* ===== ADMIN ===== */
+const admins=[
+ {name:"Thành Lộc",key:"A",lock:false},
+ {name:"Thợ B",key:"B",lock:true},
+ {name:"Thợ C",key:"C",lock:true},
+ {name:"Thợ D",key:"D",lock:false},
+ {name:"Thợ E",key:"E",lock:false},
+ {name:"Thợ F",key:"F",lock:false},
+ {name:"Thợ G",key:"G",lock:false},
+ {name:"Thợ H",key:"H",lock:false}
+];
+
+function renderAdmins(){
+ adminList.innerHTML=admins.map(a=>{
+   const link=location.origin+location.pathname+"?u="+a.key;
+   return `
+   <div class="admin-row">
+     <div class="admin-box">
+       <div><b>${a.name}</b></div>
+       <div class="small">${link}</div>
+       <div class="copy" onclick="navigator.clipboard.writeText('${link}')">📋 Copy link</div>
+     </div>
+     <div class="lock">${a.lock?"🔒":"🔓"}</div>
+   </div>`;
+ }).join("");
+}
+renderAdmins();
+</script>
+
+</body>
+</html>
