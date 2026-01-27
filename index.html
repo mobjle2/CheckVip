@@ -1,1 +1,37 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TRUNGGIA82 Check VIP – ADMIN</title>
+<style>
+body{margin:0;font-family:Arial;background:#020617;color:#e5e7eb}
+.wrap{display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1200px;margin:auto;padding:20px}
+.box{background:#020617;border:1px solid #1e293b;border-radius:16px;padding:16px}
+input,button{width:100%;padding:12px;border-radius:10px;border:none;font-size:15px}
+button{margin-top:10px;background:#0ea5e9;color:#000;font-weight:bold}
+.item{padding:12px 0;border-bottom:1px solid #1e293b}
+.vip{font-weight:bold}
+.vip-8{color:#f59e0b}.vip-9{color:#ef4444}
+.row{display:flex;align-items:center;gap:6px}
+.small{font-size:12px;color:#9ca3af}
+.admin-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1e293b}
+.admin-item input{width:70px;padding:6px;font-size:13px}
+.copy{cursor:pointer;color:#38bdf8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="box">
+    <h2>CHECK VIP</h2>
+    <input id="q" placeholder="Nhập mã chip / prefix">
+    <button onclick="check()">CHECK</button>
+    <div id="out"></div>
+  </div>
+
+  <div class="box">
+    <h2>ADMIN TRUNGGIA82</h2>
+    <div id="admin"></div>
+    <div class="small" style="margin-top:8px">Admin pass: <b>12345</b></div>
+  </div>
