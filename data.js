@@ -183,6 +183,7 @@ const data = [
 {code:"JZ387", vip:"VIP 6", norm:"JZ387", chip:"—"},
 {code:"JZ481", vip:"VIP 6", norm:"JZ481", chip:"—"},
 {code:"KM3V6001CM-B705", vip:"VIP 6+ (Sam Sung V7 )", norm:"KM3V6001CMB705", chip:"SAM SUNG"},
+{code:"KM2L9001CM-B518", vip:"VIP 6+ (Sam Sung V7 )", norm:"KM2L9001CM-B518", chip:"SAM SUNG"},
 {code:"KM2V7001CM-B706", vip:"VIP 6+ (Sam Sung V7 )", norm:"KM2V7001CMB706", chip:"SAM SUNG"},
 {code:"KM2V8001CM-B707", vip:"VIP 6+ (Sam Sung V7 )", norm:"KM2V8001CMB707", chip:"SAM SUNG"},
 {code:"KM3V6001CA-B708", vip:"VIP 6+ (Sam Sung V7 )", norm:"KM3V6001CAB708", chip:"SAM SUNG"},
