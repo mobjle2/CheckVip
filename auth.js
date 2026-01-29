@@ -10,56 +10,53 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const loginBox = document.getElementById("loginBox");
-const appBox = document.getElementById("app");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const loginMsg = document.getElementById("loginMsg");
-
-loginBtn.addEventListener("click", login);
-logoutBtn.addEventListener("click", logout);
-
 // LOGIN
-async function login() {
+window.login = async function () {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errorBox = document.getElementById("loginError");
+  errorBox.textContent = "";
 
   if (!email || !password) {
-    loginMsg.innerText = "❌ Nhập đủ email & password";
+    errorBox.textContent = "❌ Nhập đủ email và mật khẩu";
     return;
   }
 
   try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    const uid = res.user.uid;
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCred.user.uid;
 
     // kiểm tra admin trong Firestore
-    const adminRef = doc(db, "admins", uid);
-    const snap = await getDoc(adminRef);
+    const ref = doc(db, "admins", uid);
+    const snap = await getDoc(ref);
 
     if (!snap.exists() || snap.data().role !== "admin") {
       await signOut(auth);
-      loginMsg.innerText = "❌ Không có quyền admin";
+      errorBox.textContent = "❌ Không phải tài khoản admin";
       return;
     }
 
   } catch (err) {
-    loginMsg.innerText = "❌ Sai email hoặc mật khẩu";
+    errorBox.textContent = "❌ Sai email hoặc mật khẩu";
+    console.error(err);
   }
-}
+};
 
-// LOGOUT
-function logout() {
-  signOut(auth);
-}
-
-// THEO DÕI LOGIN
+// AUTO CHECK LOGIN
 onAuthStateChanged(auth, (user) => {
+  const loginBox = document.getElementById("loginBox");
+  const app = document.getElementById("app");
+
   if (user) {
-    loginBox.classList.add("hidden");
-    appBox.classList.remove("hidden");
+    loginBox.style.display = "none";
+    app.style.display = "block";
   } else {
-    appBox.classList.add("hidden");
-    loginBox.classList.remove("hidden");
+    loginBox.style.display = "block";
+    app.style.display = "none";
   }
 });
+
+// LOGOUT
+window.logout = async function () {
+  await signOut(auth);
+};
