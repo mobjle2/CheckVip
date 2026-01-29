@@ -1,72 +1,107 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Check VIP</title>
-  <link rel="stylesheet" href="style.css"><!-- CSS giao diện đẹp -->
+<meta charset="UTF-8">
+<title>CHECK VIP</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#020617,#020617);
+  color: #fff;
+}
+
+/* LOGIN */
+#loginBox {
+  max-width: 400px;
+  margin: 120px auto;
+  padding: 30px;
+  background: #020617;
+  border-radius: 14px;
+  box-shadow: 0 0 30px rgba(0,0,0,.5);
+}
+#loginBox h2 { text-align:center }
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background: #0ea5e9;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* MAIN */
+#app {
+  display: none;
+  padding: 40px;
+}
+.wrapper {
+  display: flex;
+  gap: 30px;
+}
+.box {
+  flex: 1;
+  background: #020617;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
+.box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.lock {
+  float: right;
+  color: gold;
+}
+.logout {
+  margin-top: 30px;
+  background: #ef4444;
+}
+</style>
 </head>
+
 <body>
 
-<!-- 🔐 LOGIN -->
+<!-- LOGIN -->
 <div id="loginBox">
-  <h2>Đăng nhập</h2>
-  <input id="email" placeholder="Email">
+  <h2>🔒 ADMIN LOGIN</h2>
+  <input id="email" placeholder="Email admin">
   <input id="password" type="password" placeholder="Password">
   <button onclick="login()">Đăng nhập</button>
-  <p id="msg"></p>
 </div>
 
-<!-- ✅ APP SAU KHI LOGIN -->
-<div id="app" style="display:none">
+<!-- APP -->
+<div id="app">
+  <div class="wrapper">
 
-  <!-- ==== GIAO DIỆN CHECK VIP (ẢNH BẠN GỬI) ==== -->
-  <div class="container">
-    <div class="checkvip">
+    <!-- CHECK VIP -->
+    <div class="box">
       <h2>CHECK VIP</h2>
-      <input placeholder="Nhập mã chip / prefix">
-      <button>CHECK</button>
+      <input id="uidCheck" placeholder="Nhập UID / mã chip">
+      <button onclick="checkVip()">CHECK</button>
+      <p id="result"></p>
     </div>
 
-    <div class="admin-panel">
+    <!-- ADMIN -->
+    <div class="box">
       <h2>ADMIN PANEL</h2>
-      <ul>
-        <li>Thợ A 🔒</li>
-        <li>Thợ B 🔒</li>
-        <li>Thợ C 🔒</li>
-        <li>Thợ D 🔒</li>
-      </ul>
+      <p>Thợ A <span class="lock">🔒</span></p>
+      <p>Thợ B <span class="lock">🔒</span></p>
+      <p>Thợ C <span class="lock">🔒</span></p>
+      <p>Thợ D <span class="lock">🔒</span></p>
     </div>
+
   </div>
 
-  <button onclick="logout()">Đăng xuất</button>
+  <button class="logout" onclick="logout()">Đăng xuất</button>
 </div>
 
-<script type="module">
-import { auth } from "./firebase.js";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-// THEO DÕI LOGIN
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginBox.style.display = "none";
-    app.style.display = "block";
-  } else {
-    loginBox.style.display = "block";
-    app.style.display = "none";
-  }
-});
-
-window.login = () => {
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .catch(e => msg.innerText = e.message);
-};
-
-window.logout = () => signOut(auth);
-</script>
-
+<script type="module" src="data.js"></script>
 </body>
 </html>
