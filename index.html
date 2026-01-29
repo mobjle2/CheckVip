@@ -1,125 +1,195 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Check VIP</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #020617, #020617);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>CHECK VIP</title>
 
-    .box {
-      background: #020617;
-      border-radius: 12px;
-      padding: 30px;
-      width: 420px;
-      box-shadow: 0 0 30px rgba(0,0,0,.6);
-    }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #020617, #020617);
+  color: #fff;
+  min-height: 100vh;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 15px;
-    }
+.wrapper {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+/* LEFT */
+.left {
+  flex: 1;
+  background: #020617;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
 
-    .btn-login {
-      background: #0ea5e9;
-      color: #000;
-      font-weight: bold;
-    }
+.left h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .btn-check {
-      background: #0ea5e9;
-      color: #000;
-      margin-top: 10px;
-      font-weight: bold;
-    }
+.left input {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 15px;
+}
 
-    .logout {
-      background: #ef4444;
-      margin-top: 15px;
-      color: #fff;
-      font-weight: bold;
-    }
+.left button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  background: #0ea5e9;
+  cursor: pointer;
+}
 
-    .admin {
-      margin-top: 20px;
-      background: #020617;
-      padding: 15px;
-      border-radius: 10px;
-    }
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+}
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-    }
+/* RIGHT */
+.right {
+  width: 380px;
+  background: #020617;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
 
-    .lock {
-      color: gold;
-    }
+.right h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    #app { display: none; }
-  </style>
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.lock {
+  color: gold;
+}
+
+.logout {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  background: #ef4444;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* LOGIN */
+#loginBox {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #020617, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  width: 360px;
+  background: #020617;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0,0,0,.7);
+}
+
+.login h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: none;
+}
+
+.login button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  background: #0ea5e9;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- LOGIN -->
-  <div class="box" id="loginBox">
+<!-- LOGIN -->
+<div id="loginBox">
+  <div class="login">
     <h2>🔒 ADMIN LOGIN</h2>
     <input id="email" placeholder="Email admin">
     <input id="password" type="password" placeholder="Password">
-    <button class="btn-login" onclick="login()">Đăng nhập</button>
+    <button onclick="login()">Đăng nhập</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="wrapper" id="app" style="display:none">
+
+  <!-- LEFT -->
+  <div class="left">
+    <h2>✅ CHECK VIP</h2>
+    <input id="codeInput" placeholder="Nhập mã chip / prefix">
+    <button onclick="checkVip()">CHECK</button>
+    <div id="result"></div>
   </div>
 
-  <!-- APP (GIAO DIỆN CŨ) -->
-  <div class="box" id="app">
-    <h2>✅ CHECK VIP</h2>
+  <!-- RIGHT -->
+  <div class="right">
+    <h2>ADMIN TRUNGGIA82</h2>
 
-    <input id="codeInput" placeholder="Nhập UID / code cần check">
-    <button class="btn-check" onclick="checkVip()">CHECK</button>
-
-    <p id="result"></p>
-
-    <div class="admin">
-      <h3>ADMIN PANEL</h3>
-      <div class="row">Thợ A <span class="lock">🔒</span></div>
-      <div class="row">Thợ B <span class="lock">🔒</span></div>
-      <div class="row">Thợ C <span class="lock">🔒</span></div>
-      <div class="row">Thợ D <span class="lock">🔒</span></div>
-    </div>
+    <div class="row">Thợ A <span class="lock">🔒</span></div>
+    <div class="row">Thợ B <span class="lock">🔒</span></div>
+    <div class="row">Thợ C <span class="lock">🔒</span></div>
+    <div class="row">Thợ D <span class="lock">🔒</span></div>
+    <div class="row">Thợ E <span class="lock">🔒</span></div>
+    <div class="row">Thợ F <span class="lock">🔒</span></div>
+    <div class="row">Thợ G <span class="lock">🔒</span></div>
+    <div class="row">Thợ H <span class="lock">🔒</span></div>
+    <div class="row">Thợ I <span class="lock">🔒</span></div>
+    <div class="row">Thợ J <span class="lock">🔒</span></div>
 
     <button class="logout" onclick="logout()">Đăng xuất</button>
   </div>
 
-  <script type="module" src="./firebase.js"></script>
-  <script type="module" src="./auth.js"></script>
-  <script type="module" src="./vip-check.js"></script>
+</div>
+
+<script type="module" src="./firebase.js"></script>
+<script type="module" src="./auth.js"></script>
+<script type="module" src="./vip-check.js"></script>
 
 </body>
 </html>
