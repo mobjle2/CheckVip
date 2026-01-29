@@ -3,63 +3,46 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
 import {
   doc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ======================
-   BẮT BUỘC LOGOUT KHI LOAD
-====================== */
+// luôn logout khi load
 await signOut(auth);
 
-/* ======================
-   LOGIN
-====================== */
-window.login = async function () {
-  const emailInput = document.getElementById("email");
-  const passInput  = document.getElementById("password");
-  const errorBox   = document.getElementById("loginError");
-
-  const email = emailInput.value.trim();
-  const password = passInput.value.trim();
-
-  errorBox.textContent = "";
+window.login = async () => {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const error = document.getElementById("loginError");
+  error.textContent = "";
 
   if (!email || !password) {
-    errorBox.textContent = "❌ Nhập đủ email và mật khẩu";
+    error.textContent = "❌ Nhập đủ email và mật khẩu";
     return;
   }
 
   try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = cred.user.uid;
 
-    // kiểm tra quyền admin
-    const adminRef = doc(db, "admins", uid);
-    const adminSnap = await getDoc(adminRef);
-
-    if (!adminSnap.exists() || adminSnap.data().role !== "admin") {
+    const snap = await getDoc(doc(db, "admins", uid));
+    if (!snap.exists()) {
       await signOut(auth);
-      errorBox.textContent = "❌ Không phải tài khoản admin";
+      error.textContent = "❌ Không phải admin";
       return;
     }
 
-    // login OK → show app
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("app").style.display = "block";
 
-  } catch (err) {
-    console.error(err);
-    errorBox.textContent = "❌ Sai email hoặc mật khẩu";
+  } catch (e) {
+    console.error(e);
+    error.textContent = "❌ Sai email hoặc mật khẩu";
   }
 };
 
-/* ======================
-   LOGOUT
-====================== */
-window.logout = async function () {
+window.logout = async () => {
   await signOut(auth);
   location.reload();
 };
