@@ -1,39 +1,46 @@
-import { auth } from "./firebase.js";
-import {
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// ===== CONFIG ADMIN =====
+const ADMIN_EMAIL = "iktrungnguyen@gmail.com";
+const ADMIN_PASS  = "12345"; // đổi theo ý bạn
 
-window.login = async function () {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorBox = document.getElementById("loginError");
+// ===== CHECK QUERY ?u=ADMIN =====
+const params = new URLSearchParams(window.location.search);
+const isAdmin = params.get("u") === "ADMIN";
 
-  errorBox.style.display = "none";
+// ===== INIT =====
+window.addEventListener("load", () => {
+  if (!isAdmin) return;
 
-  if (!email || !password) {
-    errorBox.innerText = "Vui lòng nhập đầy đủ email và mật khẩu";
-    errorBox.style.display = "block";
-    return;
+  const logged = sessionStorage.getItem("ADMIN_LOGIN");
+  if (logged !== "1") {
+    showLogin();
   }
+});
 
-  try {
-    // ✅ BẮT BUỘC session chỉ tồn tại trong tab
-    await setPersistence(auth, browserSessionPersistence);
+// ===== LOGIN =====
+function adminLogin() {
+  const email = document.getElementById("adminEmail").value.trim();
+  const pass  = document.getElementById("adminPass").value.trim();
+  const err   = document.getElementById("loginError");
 
-    await signInWithEmailAndPassword(auth, email, password);
-
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("app").style.display = "block";
-  } catch (err) {
-    errorBox.innerText = "Sai tài khoản hoặc mật khẩu";
-    errorBox.style.display = "block";
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+    sessionStorage.setItem("ADMIN_LOGIN", "1");
+    hideLogin();
+  } else {
+    err.style.display = "block";
   }
-};
+}
 
-window.logout = async function () {
-  await signOut(auth);
+// ===== LOGOUT =====
+function adminLogout() {
+  sessionStorage.removeItem("ADMIN_LOGIN");
   location.reload();
-};
+}
+
+// ===== UI =====
+function showLogin() {
+  document.getElementById("loginOverlay").style.display = "flex";
+}
+
+function hideLogin() {
+  document.getElementById("loginOverlay").style.display = "none";
+}
