@@ -49,6 +49,51 @@ button{margin-top:12px;background:#0ea5e9;color:#000;font-weight:bold;cursor:poi
 </head>
 
 <body>
+<!-- ADMIN LOGIN OVERLAY -->
+<div id="loginOverlay" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.75);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+  <div style="
+  width:360px;
+  background:#0b1220;
+  padding:24px;
+  border-radius:12px;
+  box-shadow:0 0 40px rgba(0,0,0,.6);
+  text-align:center;
+  ">
+    <h3 style="color:#fff;margin-bottom:16px">🔐 ADMIN LOGIN</h3>
+
+    <input id="adminEmail" type="email" placeholder="Email admin"
+      style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:none">
+
+    <input id="adminPass" type="password" placeholder="Mật khẩu"
+      style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:none">
+
+    <button onclick="adminLogin()" style="
+      width:100%;
+      padding:10px;
+      background:#0ea5e9;
+      border:none;
+      border-radius:6px;
+      color:#000;
+      font-weight:bold;
+      cursor:pointer;
+    ">Đăng nhập</button>
+
+    <p id="loginError" style="
+      margin-top:10px;
+      color:#ff4d4f;
+      font-size:14px;
+      display:none;
+    ">Sai email hoặc mật khẩu</p>
+  </div>
+</div>
 
 <div class="container" id="mainUI">
   <div class="panel">
