@@ -1,42 +1,32 @@
 import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const loginBox = document.getElementById("loginBox");
-const app = document.getElementById("app");
-
-// LOGIN
-window.login = async () => {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+window.login = async function () {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   if (!email || !password) {
-    alert("Nhập email và mật khẩu");
+    alert("Nhập đầy đủ email & password");
     return;
   }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "flex";
   } catch (e) {
-    alert("Sai email hoặc mật khẩu");
+    alert("Sai tài khoản hoặc mật khẩu");
   }
 };
 
-// LOGOUT
-window.logout = async () => {
+window.logout = async function () {
   await signOut(auth);
+  location.reload(); // ÉP LOGIN LẠI
 };
 
-// AUTO CHECK LOGIN (CỰC KỲ QUAN TRỌNG)
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginBox.style.display = "none";
-    app.style.display = "block";
-  } else {
-    loginBox.style.display = "block";
-    app.style.display = "none";
-  }
-});
+/* 🚫 QUAN TRỌNG: KHÔNG auto-login */
+document.getElementById("loginBox").style.display = "flex";
+document.getElementById("app").style.display = "none";
