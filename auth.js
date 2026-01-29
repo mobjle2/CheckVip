@@ -9,41 +9,56 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// ⚠️ BẮT BUỘC LOGOUT KHI LOAD (F5 LÀ PHẢI LOGIN LẠI)
+/* ======================
+   BẮT BUỘC LOGOUT KHI LOAD
+====================== */
 await signOut(auth);
 
-// LOGIN
+/* ======================
+   LOGIN
+====================== */
 window.login = async function () {
-  const email = email.value.trim();
-  const password = document.getElementById("password").value.trim();
-  const err = document.getElementById("loginError");
-  err.textContent = "";
+  const emailInput = document.getElementById("email");
+  const passInput  = document.getElementById("password");
+  const errorBox   = document.getElementById("loginError");
+
+  const email = emailInput.value.trim();
+  const password = passInput.value.trim();
+
+  errorBox.textContent = "";
 
   if (!email || !password) {
-    err.textContent = "❌ Nhập đủ email và mật khẩu";
+    errorBox.textContent = "❌ Nhập đủ email và mật khẩu";
     return;
   }
 
   try {
-    const u = await signInWithEmailAndPassword(auth, email, password);
-    const uid = u.user.uid;
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCred.user.uid;
 
-    const snap = await getDoc(doc(db, "admins", uid));
-    if (!snap.exists() || snap.data().role !== "admin") {
+    // kiểm tra quyền admin
+    const adminRef = doc(db, "admins", uid);
+    const adminSnap = await getDoc(adminRef);
+
+    if (!adminSnap.exists() || adminSnap.data().role !== "admin") {
       await signOut(auth);
-      err.textContent = "❌ Không phải admin";
+      errorBox.textContent = "❌ Không phải tài khoản admin";
       return;
     }
 
-    loginBox.style.display = "none";
-    app.style.display = "block";
+    // login OK → show app
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "block";
 
-  } catch {
-    err.textContent = "❌ Sai email hoặc mật khẩu";
+  } catch (err) {
+    console.error(err);
+    errorBox.textContent = "❌ Sai email hoặc mật khẩu";
   }
 };
 
-// LOGOUT
+/* ======================
+   LOGOUT
+====================== */
 window.logout = async function () {
   await signOut(auth);
   location.reload();
