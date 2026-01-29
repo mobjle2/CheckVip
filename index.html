@@ -1,120 +1,150 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>CHECK VIP</title>
+  <meta charset="UTF-8" />
+  <title>Check VIP</title>
 
-<style>
-*{box-sizing:border-box;font-family:Arial}
-body{
-  margin:0;
-  background:#020617;
-  color:#fff;
-}
-.wrapper{
-  display:flex;
-  gap:30px;
-  padding:40px;
-}
-.left,.right{
-  background:#020617;
-  border-radius:16px;
-  padding:30px;
-  box-shadow:0 0 30px rgba(0,0,0,.6);
-}
-.left{flex:1}
-.right{width:420px}
-h2{text-align:center;margin-bottom:20px}
-input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:none;
-  margin-bottom:15px;
-}
-button{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:none;
-  font-weight:bold;
-  background:#0ea5e9;
-  cursor:pointer;
-}
-.row{
-  display:flex;
-  justify-content:space-between;
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.lock{color:gold}
-.logout{
-  margin-top:20px;
-  background:#ef4444;
-  color:#fff;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #020617, #020617);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-/* LOGIN */
-#loginBox{
-  position:fixed;
-  inset:0;
-  background:#020617;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-.login{
-  width:360px;
-  padding:30px;
-  border-radius:16px;
-  background:#020617;
-  box-shadow:0 0 40px rgba(0,0,0,.8);
-}
-</style>
+    .container {
+      width: 420px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 40px rgba(0,0,0,.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      background: #0ea5e9;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #app {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .box {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 25px;
+    }
+
+    .admin-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .lock {
+      color: gold;
+    }
+
+    .logout {
+      margin-top: 20px;
+      background: #ef4444;
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="loginBox">
-  <div class="login">
-    <h2>🔒 ADMIN LOGIN</h2>
-    <input id="email" placeholder="Email admin">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Đăng nhập</button>
-  </div>
+<div class="container" id="loginBox">
+  <h2>🔒 ADMIN LOGIN</h2>
+
+  <input type="email" id="email" placeholder="Email admin" />
+  <input type="password" id="password" placeholder="Mật khẩu" />
+  <button onclick="login()">Đăng nhập</button>
+
+  <!-- ✅ DÒNG DUY NHẤT ĐƯỢC THÊM -->
+  <p id="loginError" style="
+    margin-top: 10px;
+    color: #ff4d4f;
+    font-size: 14px;
+    display: none;
+    text-align: center;
+  "></p>
 </div>
 
 <!-- APP -->
-<div class="wrapper" id="app" style="display:none">
+<div id="app">
+  <div class="row">
 
-  <div class="left">
-    <h2>✅ CHECK VIP</h2>
-    <input id="codeInput" placeholder="Nhập mã chip / prefix">
-    <button onclick="checkVip()">CHECK</button>
-    <div id="result"></div>
+    <!-- CHECK VIP -->
+    <div class="box">
+      <h2>✅ CHECK VIP</h2>
+      <input id="codeInput" placeholder="Nhập mã chip / prefix" />
+      <button onclick="checkVip()">CHECK</button>
+      <p id="result"></p>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="box">
+      <h2>ADMIN TRUNGGIA82</h2>
+
+      <div class="admin-row">Thợ A <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ B <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ C <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ D <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ E <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ F <span class="lock">🔒</span></div>
+      <div class="admin-row">Thợ G <span class="lock">🔒</span></div>
+
+      <button class="logout" onclick="logout()">Đăng xuất</button>
+    </div>
+
   </div>
-
-  <div class="right">
-    <h2>ADMIN TRUNGGIA82</h2>
-
-    <div class="row">Thợ A <span class="lock">🔒</span></div>
-    <div class="row">Thợ B <span class="lock">🔒</span></div>
-    <div class="row">Thợ C <span class="lock">🔒</span></div>
-    <div class="row">Thợ D <span class="lock">🔒</span></div>
-    <div class="row">Thợ E <span class="lock">🔒</span></div>
-    <div class="row">Thợ F <span class="lock">🔒</span></div>
-    <div class="row">Thợ G <span class="lock">🔒</span></div>
-    <div class="row">Thợ H <span class="lock">🔒</span></div>
-
-    <button class="logout" onclick="logout()">Đăng xuất</button>
-  </div>
-
 </div>
 
+<!-- SCRIPT -->
 <script type="module" src="./firebase.js"></script>
 <script type="module" src="./auth.js"></script>
 <script type="module" src="./vip-check.js"></script>
+
 </body>
 </html>
