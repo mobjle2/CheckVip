@@ -1,48 +1,42 @@
-import { auth, db } from "./firebase.js";
+import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
+  onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// luôn logout khi load
-await signOut(auth);
+const loginBox = document.getElementById("loginBox");
+const app = document.getElementById("app");
 
+// LOGIN
 window.login = async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const error = document.getElementById("loginError");
-  error.textContent = "";
 
   if (!email || !password) {
-    error.textContent = "❌ Nhập đủ email và mật khẩu";
+    alert("Nhập email và mật khẩu");
     return;
   }
 
   try {
-    const cred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = cred.user.uid;
-
-    const snap = await getDoc(doc(db, "admins", uid));
-    if (!snap.exists()) {
-      await signOut(auth);
-      error.textContent = "❌ Không phải admin";
-      return;
-    }
-
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("app").style.display = "block";
-
+    await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {
-    console.error(e);
-    error.textContent = "❌ Sai email hoặc mật khẩu";
+    alert("Sai email hoặc mật khẩu");
   }
 };
 
+// LOGOUT
 window.logout = async () => {
   await signOut(auth);
-  location.reload();
 };
+
+// AUTO CHECK LOGIN (CỰC KỲ QUAN TRỌNG)
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginBox.style.display = "none";
+    app.style.display = "block";
+  } else {
+    loginBox.style.display = "block";
+    app.style.display = "none";
+  }
+});
