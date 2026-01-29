@@ -21,10 +21,7 @@
       border-radius: 16px;
       box-shadow: 0 0 40px rgba(0,0,0,.6);
     }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    h2 { text-align: center; }
     input {
       width: 100%;
       padding: 12px;
@@ -36,74 +33,51 @@
     button {
       width: 100%;
       padding: 12px;
-      margin-top: 10px;
       border-radius: 8px;
       border: none;
       font-size: 16px;
       cursor: pointer;
     }
-    .btn {
-      background: #0ea5e9;
-      color: #000;
-      font-weight: bold;
-    }
-    .logout {
-      background: #ef4444;
-      color: #fff;
-      margin-top: 20px;
-    }
-    .admin {
-      margin-top: 20px;
-      background: rgba(0,0,0,.4);
-      padding: 15px;
-      border-radius: 12px;
-    }
-    .admin p {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-    }
-    .lock {
-      color: gold;
-    }
-    #loginBox { display: none; }
+    .btn { background: #0ea5e9; font-weight: bold; }
+    .logout { background: #ef4444; color: #fff; margin-top: 20px; }
+    .admin { margin-top: 20px; background: rgba(0,0,0,.4); padding: 15px; border-radius: 12px; }
+    .admin p { display: flex; justify-content: space-between; }
+    .lock { color: gold; }
     #app { display: none; }
     #result { margin-top: 10px; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div class="container" id="loginBox">
-    <h2>🔒 ADMIN LOGIN</h2>
-    <input type="email" id="email" placeholder="Email admin">
-    <input type="password" id="password" placeholder="Password">
-    <button class="btn" onclick="login()">Đăng nhập</button>
-    <p id="loginError" style="color:#f87171;"></p>
+<!-- LOGIN (HIỆN NGAY) -->
+<div class="container" id="loginBox">
+  <h2>🔒 ADMIN LOGIN</h2>
+  <input id="email" type="email" placeholder="Email admin">
+  <input id="password" type="password" placeholder="Password">
+  <button class="btn" onclick="login()">Đăng nhập</button>
+  <p id="loginError" style="color:#f87171;"></p>
+</div>
+
+<!-- APP -->
+<div class="container" id="app">
+  <h2>✅ CHECK VIP</h2>
+  <input id="codeInput" placeholder="Nhập UID / code cần check">
+  <button class="btn" onclick="checkVIP()">CHECK</button>
+  <p id="result"></p>
+
+  <div class="admin">
+    <h3>ADMIN PANEL</h3>
+    <p>Thợ A <span class="lock">🔒</span></p>
+    <p>Thợ B <span class="lock">🔒</span></p>
+    <p>Thợ C <span class="lock">🔒</span></p>
+    <p>Thợ D <span class="lock">🔒</span></p>
   </div>
 
-  <!-- APP -->
-  <div class="container" id="app">
-    <h2>✅ CHECK VIP</h2>
-    <input id="codeInput" placeholder="Nhập UID / code cần check">
-    <button class="btn" onclick="checkVIP()">CHECK</button>
-    <p id="result"></p>
+  <button class="logout" onclick="logout()">Đăng xuất</button>
+</div>
 
-    <div class="admin">
-      <h3>ADMIN PANEL</h3>
-      <p>Thợ A <span class="lock">🔒</span></p>
-      <p>Thợ B <span class="lock">🔒</span></p>
-      <p>Thợ C <span class="lock">🔒</span></p>
-      <p>Thợ D <span class="lock">🔒</span></p>
-    </div>
-
-    <button class="logout" onclick="logout()">Đăng xuất</button>
-  </div>
-
-  <!-- SCRIPT -->
-  <script type="module" src="./firebase.js"></script>
-  <script type="module" src="./auth.js"></script>
-  <script type="module" src="./vip-check.js"></script>
-
+<script type="module" src="./firebase.js"></script>
+<script type="module" src="./auth.js"></script>
+<script type="module" src="./vip-check.js"></script>
 </body>
 </html>
