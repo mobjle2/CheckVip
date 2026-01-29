@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Check VIP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     body {
       margin: 0;
@@ -12,88 +10,83 @@
       background: linear-gradient(135deg, #020617, #020617);
       color: #fff;
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      align-items: center;
+      height: 100vh;
     }
-
-    .box {
-      background: #0b1220;
-      padding: 30px;
-      border-radius: 12px;
+    .container {
       width: 420px;
-      box-shadow: 0 0 30px rgba(0,0,0,.5);
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0,0,0,.6);
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
     }
-
     input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
+      margin: 10px 0;
+      border-radius: 8px;
       border: none;
       font-size: 16px;
     }
-
     button {
       width: 100%;
       padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
       border: none;
-      border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
+    }
+    .btn {
       background: #0ea5e9;
       color: #000;
       font-weight: bold;
     }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .hidden {
-      display: none;
-    }
-
     .logout {
-      margin-top: 15px;
       background: #ef4444;
       color: #fff;
+      margin-top: 20px;
     }
-
     .admin {
       margin-top: 20px;
-      background: #020617;
+      background: rgba(0,0,0,.4);
       padding: 15px;
-      border-radius: 8px;
+      border-radius: 12px;
     }
-
+    .admin p {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
     .lock {
-      float: right;
+      color: gold;
     }
+    #loginBox { display: none; }
+    #app { display: none; }
+    #result { margin-top: 10px; font-weight: bold; }
   </style>
 </head>
 <body>
 
   <!-- LOGIN -->
-  <div id="loginBox" class="box">
+  <div class="container" id="loginBox">
     <h2>🔒 ADMIN LOGIN</h2>
-    <input id="email" type="email" placeholder="Email admin" />
-    <input id="password" type="password" placeholder="Password" />
-    <button id="loginBtn">Đăng nhập</button>
-    <p id="loginMsg"></p>
+    <input type="email" id="email" placeholder="Email admin">
+    <input type="password" id="password" placeholder="Password">
+    <button class="btn" onclick="login()">Đăng nhập</button>
+    <p id="loginError" style="color:#f87171;"></p>
   </div>
 
   <!-- APP -->
-  <div id="app" class="box hidden">
+  <div class="container" id="app">
     <h2>✅ CHECK VIP</h2>
-
-    <input id="uidInput" placeholder="Nhập UID / code cần check" />
-    <button id="checkBtn">CHECK</button>
+    <input id="codeInput" placeholder="Nhập UID / code cần check">
+    <button class="btn" onclick="checkVIP()">CHECK</button>
     <p id="result"></p>
 
     <div class="admin">
@@ -104,10 +97,10 @@
       <p>Thợ D <span class="lock">🔒</span></p>
     </div>
 
-    <button class="logout" id="logoutBtn">Đăng xuất</button>
+    <button class="logout" onclick="logout()">Đăng xuất</button>
   </div>
 
-  <!-- 🔥 SCRIPT (THỨ TỰ BẮT BUỘC) -->
+  <!-- SCRIPT -->
   <script type="module" src="./firebase.js"></script>
   <script type="module" src="./auth.js"></script>
   <script type="module" src="./vip-check.js"></script>
