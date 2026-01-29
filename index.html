@@ -1,77 +1,69 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Check VIP</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #020617, #020617);
-      color: #fff;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: linear-gradient(135deg, #020617, #020617);
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
     .container {
-      width: 420px;
-      background: rgba(255,255,255,0.05);
+      background: #0b1220;
       padding: 30px;
-      border-radius: 16px;
+      border-radius: 12px;
+      width: 360px;
       box-shadow: 0 0 40px rgba(0,0,0,.6);
     }
-    h2 { text-align: center; }
-    input {
+    input, button {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
+      margin-top: 12px;
+      border-radius: 6px;
       border: none;
       font-size: 16px;
     }
     button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
+      background: #0ea5e9;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
     }
-    .btn { background: #0ea5e9; font-weight: bold; }
-    .logout { background: #ef4444; color: #fff; margin-top: 20px; }
-    .admin { margin-top: 20px; background: rgba(0,0,0,.4); padding: 15px; border-radius: 12px; }
-    .admin p { display: flex; justify-content: space-between; }
-    .lock { color: gold; }
     #app { display: none; }
-    #result { margin-top: 10px; font-weight: bold; }
+    .error { color: #ff4d4f; margin-top: 10px; }
+    .logout { background:#ef4444; color:#fff; }
   </style>
 </head>
+
 <body>
 
-<!-- LOGIN (HIỆN NGAY) -->
+<!-- LOGIN -->
 <div class="container" id="loginBox">
   <h2>🔒 ADMIN LOGIN</h2>
-  <input id="email" type="email" placeholder="Email admin">
-  <input id="password" type="password" placeholder="Password">
-  <button class="btn" onclick="login()">Đăng nhập</button>
-  <p id="loginError" style="color:#f87171;"></p>
+  <input id="email" placeholder="Email admin" />
+  <input id="password" type="password" placeholder="Password" />
+  <button onclick="login()">Đăng nhập</button>
+  <div class="error" id="loginError"></div>
 </div>
 
 <!-- APP -->
 <div class="container" id="app">
   <h2>✅ CHECK VIP</h2>
-  <input id="codeInput" placeholder="Nhập UID / code cần check">
-  <button class="btn" onclick="checkVIP()">CHECK</button>
+  <input id="codeInput" placeholder="Nhập UID / code" />
+  <button onclick="checkVIP()">CHECK</button>
   <p id="result"></p>
 
-  <div class="admin">
-    <h3>ADMIN PANEL</h3>
-    <p>Thợ A <span class="lock">🔒</span></p>
-    <p>Thợ B <span class="lock">🔒</span></p>
-    <p>Thợ C <span class="lock">🔒</span></p>
-    <p>Thợ D <span class="lock">🔒</span></p>
-  </div>
+  <h3>ADMIN PANEL</h3>
+  <p>Thợ A 🔒</p>
+  <p>Thợ B 🔒</p>
+  <p>Thợ C 🔒</p>
+  <p>Thợ D 🔒</p>
 
   <button class="logout" onclick="logout()">Đăng xuất</button>
 </div>
@@ -79,5 +71,6 @@
 <script type="module" src="./firebase.js"></script>
 <script type="module" src="./auth.js"></script>
 <script type="module" src="./vip-check.js"></script>
+
 </body>
 </html>
