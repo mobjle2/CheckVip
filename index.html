@@ -3,29 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <title>Check VIP</title>
+  <link rel="stylesheet" href="style.css"><!-- CSS giao diện đẹp -->
 </head>
 <body>
 
-<h2 id="title">🔐 ĐĂNG NHẬP CHECK VIP</h2>
-
+<!-- 🔐 LOGIN -->
 <div id="loginBox">
+  <h2>Đăng nhập</h2>
   <input id="email" placeholder="Email">
-  <br><br>
   <input id="password" type="password" placeholder="Password">
-  <br><br>
   <button onclick="login()">Đăng nhập</button>
   <p id="msg"></p>
 </div>
 
+<!-- ✅ APP SAU KHI LOGIN -->
 <div id="app" style="display:none">
-  <h1>CHECK VIP</h1>
 
-  <input id="uid" placeholder="Nhập UID cần check">
-  <button onclick="checkVip()">Check</button>
+  <!-- ==== GIAO DIỆN CHECK VIP (ẢNH BẠN GỬI) ==== -->
+  <div class="container">
+    <div class="checkvip">
+      <h2>CHECK VIP</h2>
+      <input placeholder="Nhập mã chip / prefix">
+      <button>CHECK</button>
+    </div>
 
-  <p id="result"></p>
+    <div class="admin-panel">
+      <h2>ADMIN PANEL</h2>
+      <ul>
+        <li>Thợ A 🔒</li>
+        <li>Thợ B 🔒</li>
+        <li>Thợ C 🔒</li>
+        <li>Thợ D 🔒</li>
+      </ul>
+    </div>
+  </div>
 
-  <br>
   <button onclick="logout()">Đăng xuất</button>
 </div>
 
@@ -37,43 +49,23 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// KIỂM TRA LOGIN
+// THEO DÕI LOGIN
 onAuthStateChanged(auth, (user) => {
   if (user) {
     loginBox.style.display = "none";
     app.style.display = "block";
-    title.innerText = "✅ CHECK VIP";
   } else {
     loginBox.style.display = "block";
     app.style.display = "none";
-    title.innerText = "🔐 ĐĂNG NHẬP CHECK VIP";
   }
 });
 
-// LOGIN
-window.login = function () {
-  signInWithEmailAndPassword(
-    auth,
-    email.value,
-    password.value
-  ).catch(err => {
-    msg.innerText = err.message;
-  });
+window.login = () => {
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .catch(e => msg.innerText = e.message);
 };
 
-// LOGOUT
-window.logout = function () {
-  signOut(auth);
-};
-
-// CHECK VIP (demo)
-window.checkVip = function () {
-  if (!uid.value) {
-    result.innerText = "❌ Nhập UID";
-    return;
-  }
-  result.innerText = "✅ UID " + uid.value + " hợp lệ (demo)";
-};
+window.logout = () => signOut(auth);
 </script>
 
 </body>
