@@ -1,48 +1,35 @@
-import { auth, db } from "./firebase.js";
+import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence,
   signOut
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const loginBox = document.getElementById("loginBox");
-const app = document.getElementById("app");
-const errorBox = document.getElementById("loginError");
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 window.login = async function () {
   const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+  const password = document.getElementById("password").value.trim();
+  const errorBox = document.getElementById("loginError");
 
   errorBox.style.display = "none";
-  errorBox.innerText = "";
 
   if (!email || !password) {
-    showError("Vui lòng nhập đầy đủ email và mật khẩu");
+    errorBox.innerText = "Vui lòng nhập đầy đủ email và mật khẩu";
+    errorBox.style.display = "block";
     return;
   }
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
+    // ✅ BẮT BUỘC session chỉ tồn tại trong tab
+    await setPersistence(auth, browserSessionPersistence);
 
-    const adminRef = doc(db, "admins", uid);
-    const adminSnap = await getDoc(adminRef);
+    await signInWithEmailAndPassword(auth, email, password);
 
-    if (!adminSnap.exists()) {
-      await signOut(auth);
-      showError("Tài khoản không có quyền admin");
-      return;
-    }
-
-    // OK
-    loginBox.style.display = "none";
-    app.style.display = "block";
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "block";
   } catch (err) {
-    showError("Sai tài khoản hoặc mật khẩu");
+    errorBox.innerText = "Sai tài khoản hoặc mật khẩu";
+    errorBox.style.display = "block";
   }
 };
 
@@ -50,27 +37,3 @@ window.logout = async function () {
   await signOut(auth);
   location.reload();
 };
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    loginBox.style.display = "block";
-    app.style.display = "none";
-    return;
-  }
-
-  const adminRef = doc(db, "admins", user.uid);
-  const adminSnap = await getDoc(adminRef);
-
-  if (adminSnap.exists()) {
-    loginBox.style.display = "none";
-    app.style.display = "block";
-  } else {
-    await signOut(auth);
-    showError("Tài khoản không có quyền admin");
-  }
-});
-
-function showError(msg) {
-  errorBox.innerText = msg;
-  errorBox.style.display = "block";
-}
