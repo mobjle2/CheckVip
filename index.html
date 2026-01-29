@@ -1,76 +1,125 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Check VIP</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #020617, #020617);
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #020617, #020617);
-      color: #fff;
-      font-family: Arial, sans-serif;
+      height: 100vh;
     }
-    .container {
-      background: #0b1220;
-      padding: 30px;
+
+    .box {
+      background: #020617;
       border-radius: 12px;
-      width: 360px;
-      box-shadow: 0 0 40px rgba(0,0,0,.6);
+      padding: 30px;
+      width: 420px;
+      box-shadow: 0 0 30px rgba(0,0,0,.6);
     }
-    input, button {
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
       width: 100%;
       padding: 12px;
-      margin-top: 12px;
-      border-radius: 6px;
+      margin-bottom: 12px;
+      border-radius: 8px;
       border: none;
-      font-size: 16px;
+      font-size: 15px;
     }
+
     button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-login {
       background: #0ea5e9;
       color: #000;
       font-weight: bold;
-      cursor: pointer;
     }
+
+    .btn-check {
+      background: #0ea5e9;
+      color: #000;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .logout {
+      background: #ef4444;
+      margin-top: 15px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .admin {
+      margin-top: 20px;
+      background: #020617;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+    }
+
+    .lock {
+      color: gold;
+    }
+
     #app { display: none; }
-    .error { color: #ff4d4f; margin-top: 10px; }
-    .logout { background:#ef4444; color:#fff; }
   </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div class="container" id="loginBox">
-  <h2>🔒 ADMIN LOGIN</h2>
-  <input id="email" placeholder="Email admin" />
-  <input id="password" type="password" placeholder="Password" />
-  <button onclick="login()">Đăng nhập</button>
-  <div class="error" id="loginError"></div>
-</div>
+  <!-- LOGIN -->
+  <div class="box" id="loginBox">
+    <h2>🔒 ADMIN LOGIN</h2>
+    <input id="email" placeholder="Email admin">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn-login" onclick="login()">Đăng nhập</button>
+  </div>
 
-<!-- APP -->
-<div class="container" id="app">
-  <h2>✅ CHECK VIP</h2>
-  <input id="codeInput" placeholder="Nhập UID / code" />
-  <button onclick="checkVIP()">CHECK</button>
-  <p id="result"></p>
+  <!-- APP (GIAO DIỆN CŨ) -->
+  <div class="box" id="app">
+    <h2>✅ CHECK VIP</h2>
 
-  <h3>ADMIN PANEL</h3>
-  <p>Thợ A 🔒</p>
-  <p>Thợ B 🔒</p>
-  <p>Thợ C 🔒</p>
-  <p>Thợ D 🔒</p>
+    <input id="codeInput" placeholder="Nhập UID / code cần check">
+    <button class="btn-check" onclick="checkVip()">CHECK</button>
 
-  <button class="logout" onclick="logout()">Đăng xuất</button>
-</div>
+    <p id="result"></p>
 
-<script type="module" src="./firebase.js"></script>
-<script type="module" src="./auth.js"></script>
-<script type="module" src="./vip-check.js"></script>
+    <div class="admin">
+      <h3>ADMIN PANEL</h3>
+      <div class="row">Thợ A <span class="lock">🔒</span></div>
+      <div class="row">Thợ B <span class="lock">🔒</span></div>
+      <div class="row">Thợ C <span class="lock">🔒</span></div>
+      <div class="row">Thợ D <span class="lock">🔒</span></div>
+    </div>
+
+    <button class="logout" onclick="logout()">Đăng xuất</button>
+  </div>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./auth.js"></script>
+  <script type="module" src="./vip-check.js"></script>
 
 </body>
 </html>
