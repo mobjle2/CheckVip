@@ -1,72 +1,65 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Đăng nhập hệ thống</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      margin: 0;
-      padding: 40px;
-    }
-
-    .box {
-      max-width: 400px;
-      margin: auto;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: none;
-      background: #38bdf8;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #loginError {
-      color: #ff6b6b;
-      margin-bottom: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VIP LUXURY CHECK SYSTEM</title>
+<style>
+body{margin:0;font-family:Segoe UI,Roboto,Arial;background:#000;color:white;}
+.container{max-width:1000px;margin:40px auto;padding:20px;}
+.title{font-size:34px;font-weight:800;text-align:center;
+background:linear-gradient(90deg,#FFD700,#ffae00,#ff3c00);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:30px;}
+input{width:100%;padding:16px;font-size:18px;border-radius:10px;
+border:1px solid rgba(255,215,0,0.4);background:#111;color:white;}
+button{width:100%;padding:16px;margin-top:12px;font-size:18px;
+font-weight:700;border:none;border-radius:10px;
+background:linear-gradient(90deg,#FFD700,#ffae00);cursor:pointer;}
+.card{background:#111;padding:20px;margin-top:20px;border-radius:14px;border:1px solid #333;}
+.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;margin-top:10px;}
+.small{font-size:13px;opacity:0.6;text-align:center;margin-top:40px;}
+</style>
 </head>
 <body>
-
-<div class="box">
-
-  <!-- LOGIN BOX -->
-  <div id="loginBox">
-    <h2>🔐 Đăng nhập hệ thống</h2>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Mật khẩu">
-    <div id="loginError"></div>
-    <button onclick="login()">ĐĂNG NHẬP</button>
-  </div>
-
-  <!-- APP BOX -->
-  <div id="appBox" class="hidden">
-    <h2>✅ Đã đăng nhập</h2>
-    <button onclick="logout()">Đăng xuất</button>
-  </div>
-
+<div class="container">
+<div class="title">VIP LUXURY CHECK SYSTEM</div>
+<input id="codeInput" placeholder="Nhập mã cần check...">
+<button onclick="check()">CHECK</button>
+<div id="result"></div>
+<div class="small">
+⚠ Tool làm ve chai check tham khảo, không nên tin 100%. Data nhiều nguồn phân VIP khác nhau nên có thể sai sót.
+</div>
 </div>
 
-<script type="module" src="app.js"></script>
+<script src="data.js"></script>
+
+<script>
+function check() {
+  const input = document.getElementById("codeInput").value.trim().toUpperCase();
+  const box = document.getElementById("result");
+  box.innerHTML = "";
+  if (!input) return;
+
+  const results = DATA.filter(item =>
+    item.code && item.code.toUpperCase().includes(input)
+  );
+
+  if (results.length === 0) {
+    box.innerHTML = "<div style='opacity:0.6'>❌ Không xác định mã</div>";
+    return;
+  }
+
+  results.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <div style="font-weight:700;font-size:18px">${item.code}</div>
+      <div class="badge">${item.vip || item.type || ""}</div>
+    `;
+    box.appendChild(div);
+  });
+}
+</script>
 
 </body>
 </html>
